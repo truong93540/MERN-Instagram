@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const postSchema = new mongoose.Schema(
+const loopSchema = new mongoose.Schema(
     {
         author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         mediaType: { type: String, enum: ['image', 'video'], required: true },
@@ -12,6 +12,6 @@ const postSchema = new mongoose.Schema(
     { timestamps: true }
 )
 
-const Post = mongoose.model('Post', postSchema)
+const Loop = mongoose.model('Loop', loopSchema)
 
-export default Post
+export default Loop
