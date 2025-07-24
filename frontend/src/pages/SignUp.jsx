@@ -1,9 +1,16 @@
 import { useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import axios from 'axios'
+import { ClipLoader } from 'react-spinners'
+import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import logo from '../assets/logo2.png'
 import logo1 from '../assets/logo.png'
+import { serverURL } from '../App'
+import { setUserData } from '../redux/userSlice'
 
 const SignUp = () => {
+    const navigate = useNavigate()
     const [inputClicked, setInputClicked] = useState({
         name: false,
         userName: false,
@@ -11,10 +18,33 @@ const SignUp = () => {
         password: false,
     })
     const [showPassword, setShowPassword] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [name, setName] = useState('')
     const [userName, setUserName] = useState('')
+    const [err, setErr] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const dispatch = useDispatch()
+
+    const handleSignUp = async () => {
+        setErr('')
+        setLoading(true)
+        try {
+            const result = await axios.post(
+                `${serverURL}/api/auth/signup`,
+                { name, userName, email, password },
+                { withCredential: true }
+            )
+            dispatch(setUserData(result.data))
+            console.log('result.data', result.data)
+            setLoading(false)
+        } catch (error) {
+            setErr(error.response?.data?.message)
+            console.log('error', error)
+            setLoading(false)
+        }
+    }
+
     return (
         <div className="w-full h-screen bg-gradient-to-b from-black to-gray-900 flex flex-col justify-center items-center">
             <div className="w-[90%] lg:max-w-[60%] h-[600px] bg-white rounded-2xl flex justify-center items-center overflow-hidden border-2 border-[#1a1f23]">
@@ -28,8 +58,8 @@ const SignUp = () => {
                         onClick={() => setInputClicked({ ...inputClicked, name: true })}>
                         <label
                             htmlFor="name"
-                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] ${
-                                inputClicked.name ? 'top-[-18px]' : ''
+                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
+                                inputClicked.name ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
                             Enter Your Name
                         </label>
@@ -40,6 +70,7 @@ const SignUp = () => {
                             required
                             value={name}
                             onChange={(e) => setName(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, name: true })}
                         />
                     </div>
                     <div
@@ -47,8 +78,8 @@ const SignUp = () => {
                         onClick={() => setInputClicked({ ...inputClicked, userName: true })}>
                         <label
                             htmlFor="userName"
-                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] ${
-                                inputClicked.userName ? 'top-[-18px]' : ''
+                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
+                                inputClicked.userName ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
                             Enter Username
                         </label>
@@ -59,6 +90,7 @@ const SignUp = () => {
                             required
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, userName: true })}
                         />
                     </div>
                     <div
@@ -66,8 +98,8 @@ const SignUp = () => {
                         onClick={() => setInputClicked({ ...inputClicked, email: true })}>
                         <label
                             htmlFor="email"
-                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] ${
-                                inputClicked.email ? 'top-[-18px]' : ''
+                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
+                                inputClicked.email ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
                             Enter Email
                         </label>
@@ -78,6 +110,7 @@ const SignUp = () => {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, email: true })}
                         />
                     </div>
                     <div
@@ -85,8 +118,8 @@ const SignUp = () => {
                         onClick={() => setInputClicked({ ...inputClicked, password: true })}>
                         <label
                             htmlFor="password"
-                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] ${
-                                inputClicked.password ? 'top-[-18px]' : ''
+                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
+                                inputClicked.password ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
                             Enter Password
                         </label>
@@ -97,6 +130,7 @@ const SignUp = () => {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, password: true })}
                         />
                         {!showPassword ? (
                             <FaEye
@@ -110,12 +144,20 @@ const SignUp = () => {
                             />
                         )}
                     </div>
-                    <button className="w-[70%] px-[20px] py-[10px] bg-black text-white font-semibold h-[50px] cursor-pointer rounded-2xl mt-[30px]">
-                        Sign Up
+                    {err && <p className="text-red-500">{err}</p>}
+                    <button
+                        className="w-[70%] px-[20px] py-[10px] bg-black text-white font-semibold h-[50px] cursor-pointer rounded-2xl mt-[30px]"
+                        onClick={handleSignUp}
+                        disabled={loading}>
+                        {loading ? <ClipLoader size={30} color="white" /> : 'Sign Up'}
                     </button>
                     <p className="cursor-pointer text-gray-800">
-                        Already Have an account ?{' '}
-                        <span className="border-b-2 border-b-black pb-[3px] text-black">
+                        Already Have An Account ?{' '}
+                        <span
+                            className="border-b-2 border-b-black pb-[3px] text-black"
+                            onClick={() => {
+                                navigate('/SignIn')
+                            }}>
                             Sign In
                         </span>
                     </p>
