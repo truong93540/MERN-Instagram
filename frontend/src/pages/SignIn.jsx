@@ -29,7 +29,7 @@ const SignIn = () => {
             const result = await axios.post(
                 `${serverURL}/api/auth/signin`,
                 { userName, password },
-                { withCredential: true }
+                { withCredentials: true }
             )
             dispatch(setUserData(result.data))
             setLoading(false)
@@ -53,8 +53,8 @@ const SignIn = () => {
                         onClick={() => setInputClicked({ ...inputClicked, userName: true })}>
                         <label
                             htmlFor="userName"
-                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] ${
-                                inputClicked.userName ? 'top-[-18px]' : ''
+                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
+                                inputClicked.userName ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
                             Enter Username
                         </label>
@@ -65,6 +65,7 @@ const SignIn = () => {
                             required
                             value={userName}
                             onChange={(e) => setUserName(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, userName: true })}
                         />
                     </div>
                     <div
@@ -72,8 +73,8 @@ const SignIn = () => {
                         onClick={() => setInputClicked({ ...inputClicked, password: true })}>
                         <label
                             htmlFor="password"
-                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] ${
-                                inputClicked.password ? 'top-[-18px]' : ''
+                            className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
+                                inputClicked.password ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
                             Enter Password
                         </label>
@@ -84,6 +85,7 @@ const SignIn = () => {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, password: true })}
                         />
                         {!showPassword ? (
                             <FaEye
