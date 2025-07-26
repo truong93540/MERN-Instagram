@@ -4,7 +4,7 @@ import User from '../models/user.model.js'
 export const getCurrentUser = async (req, res) => {
     try {
         const userId = req.userId
-        const user = await User.findById(userId)
+        const user = await User.findById(userId).select('-password')
         if (!user) {
             return res.status(400).json({ message: 'user not found' })
         }
@@ -28,13 +28,14 @@ export const suggestedUsers = async (req, res) => {
 export const editProfile = async (req, res) => {
     try {
         const { name, userName, bio, profession, gender } = req.body
+
         const user = await User.findById(req.userId).select('-password')
-        if (user) {
+        if (!user) {
             return res.status(400).json({ message: 'user not found' })
         }
 
         const sameUserWithUserName = await User.findOne({ userName }).select('-password')
-        if (sameUserWithUserName && sameUserWithUserName._id !== req.userId) {
+        if (sameUserWithUserName && sameUserWithUserName._id.toString() != req.userId) {
             return res.status(400).json({ message: 'userName already exits' })
         }
 
@@ -45,8 +46,10 @@ export const editProfile = async (req, res) => {
 
         user.name = name
         user.userName = userName
-        user.profileImage = profileImage
         user.bio = bio
+        if (profileImage) {
+            user.profileImage = profileImage
+        }
         user.profession = profession
         user.gender = gender
 

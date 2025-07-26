@@ -6,10 +6,12 @@ import axios from 'axios'
 import { serverURL } from '../App'
 import { setUserData } from '../redux/userSlice'
 import OtherUser from './OtherUser'
+import { useNavigate } from 'react-router-dom'
 
 const LeftHome = () => {
     const { userData, suggestedUsers } = useSelector((state) => state.user)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const handleLogout = async () => {
         try {
@@ -31,7 +33,9 @@ const LeftHome = () => {
             </div>
             <div className="flex items-center justify-between w-full gap-[10px] px-[10px] border-b-2 border-b-gray-900 py-[10px]">
                 <div className="flex items-center justify-between ">
-                    <div className="w-[70px] h-[70px] border-2 border-black rounded-full cursor-pointer overflow-hidden">
+                    <div
+                        className="w-[70px] h-[70px] border-2 border-black rounded-full cursor-pointer overflow-hidden"
+                        onClick={() => navigate(`/profile/${userData.userName}`)}>
                         <img
                             src={userData.profileImage || dp}
                             alt=""
