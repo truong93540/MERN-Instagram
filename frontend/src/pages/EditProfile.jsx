@@ -12,7 +12,6 @@ import { ClipLoader } from 'react-spinners'
 const EditProfile = () => {
     const navigate = useNavigate()
     const { userData } = useSelector((state) => state.user)
-    console.log('userData', userData)
     const imageInput = useRef()
     const [frontendImage, setFrontendImage] = useState(userData.profileImage || dp)
     const [backendImage, setBackendImage] = useState(null)

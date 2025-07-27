@@ -14,10 +14,10 @@ const Nav = () => {
             <div onClick={() => navigate('/')} className="cursor-pointer">
                 <GoHomeFill className="text-white w-[32px] h-[32px]" />
             </div>
-            <div>
+            <div className="cursor-pointer">
                 <IoSearch className="text-white w-[32px] h-[32px]" />
             </div>
-            <div>
+            <div className="cursor-pointer" onClick={() => navigate('/upload')}>
                 <FiPlusSquare className="text-white w-[32px] h-[32px]" />
             </div>
             <div>
