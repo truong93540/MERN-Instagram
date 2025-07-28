@@ -5,6 +5,11 @@ import { useNavigate } from 'react-router-dom'
 import VideoPlayer from '../components/VideoPlayer'
 import { serverURL } from '../App'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { setPostData } from '../redux/postSlice'
+import { setStoryData } from '../redux/storySlice'
+import { setLoopData } from '../redux/loopSlice'
+import { ClipLoader } from 'react-spinners'
 
 const Upload = () => {
     const navigate = useNavigate()
@@ -14,6 +19,11 @@ const Upload = () => {
     const mediaInput = useRef()
     const [mediaType, setMediaType] = useState('')
     const [caption, setCaption] = useState('')
+    const dispatch = useDispatch()
+    const { postData } = useSelector((state) => state.post)
+    const { storyData } = useSelector((state) => state.story)
+    const { loopData } = useSelector((state) => state.loop)
+    const [loading, setLoading] = useState(false)
 
     const handleMedia = (e) => {
         const file = e.target.files[0]
@@ -27,6 +37,7 @@ const Upload = () => {
     }
 
     const uploadPost = async () => {
+        setLoading(true)
         try {
             const formData = new FormData()
             formData.append('caption', caption)
@@ -35,26 +46,34 @@ const Upload = () => {
             const result = await axios.post(`${serverURL}/api/post/upload`, formData, {
                 withCredentials: true,
             })
-            console.log(result)
+            dispatch(setPostData([...postData, result.data]))
+            setLoading(false)
+            navigate('/')
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
     }
 
     const uploadStory = async () => {
+        setLoading(true)
         try {
             const formData = new FormData()
             formData.append('media', backendMedia)
             const result = await axios.post(`${serverURL}/api/story/upload`, formData, {
                 withCredentials: true,
             })
-            console.log(result)
+            dispatch(setStoryData([...storyData, result.data]))
+            setLoading(false)
+            navigate('/')
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
     }
 
     const uploadLoop = async () => {
+        setLoading(true)
         try {
             const formData = new FormData()
             formData.append('caption', caption)
@@ -62,9 +81,12 @@ const Upload = () => {
             const result = await axios.post(`${serverURL}/api/loop/upload`, formData, {
                 withCredentials: true,
             })
-            console.log(result)
+            dispatch(setLoopData([...loopData, result.data]))
+            setLoading(false)
+            navigate('/')
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
     }
 
@@ -159,7 +181,7 @@ const Upload = () => {
                 <button
                     className=" w-[60%] max-w-[400px] py-[5px] h-[50px] bg-white mt-[50px] cursor-pointer rounded-2xl"
                     onClick={handleUpload}>
-                    Upload {mediaType}
+                    {loading ? <ClipLoader /> : `Upload ${mediaType}`}
                 </button>
             )}
         </div>

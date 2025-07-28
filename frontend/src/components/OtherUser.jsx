@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import dp from '../assets/dp.webp'
+import FollowButton from './FollowButton'
 
 const OtherUser = ({ user }) => {
     const navigate = useNavigate()
@@ -20,9 +21,15 @@ const OtherUser = ({ user }) => {
                     </div>
                 </div>
             </div>
-            <button className="px-[10px] w-[100px] py-[5px] h-[40px] bg-white rounded-2xl cursor-pointer">
+            <FollowButton
+                tailwind={
+                    'px-[10px] w-[100px] py-[5px] h-[40px] bg-white rounded-2xl cursor-pointer'
+                }
+                targetUserId={user._id}
+            />
+            {/* <button className="px-[10px] w-[100px] py-[5px] h-[40px] bg-white rounded-2xl cursor-pointer">
                 Follow
-            </button>
+            </button> */}
         </div>
     )
 }

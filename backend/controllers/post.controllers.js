@@ -35,7 +35,10 @@ export const uploadPost = async (req, res) => {
 
 export const getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.find({}).populate('author', 'name userName profileImage')
+        const posts = await Post.find({})
+            .populate('author', 'name userName profileImage')
+            .populate('comments.author', 'name userName profileImage')
+            .sort({ createdAt: -1 })
         return res.status(200).json(posts)
     } catch (error) {
         return res.status(500).json({ message: `get all posts error ${error}` })
@@ -57,14 +60,14 @@ export const like = async (req, res) => {
             post.likes.push(req.userId)
         }
         await post.save()
-        post.populate('author', 'name userName profileImage')
+        await post.populate('author', 'name userName profileImage')
         return res.status(200).json(post)
     } catch (error) {
         return res.status(500).json({ message: `like post error ${error}` })
     }
 }
 
-export const comment = async () => {
+export const comment = async (req, res) => {
     try {
         const { message } = req.body
         const postId = req.params.postId
@@ -79,8 +82,8 @@ export const comment = async () => {
         })
 
         await post.save()
-        post.populate('author', 'name userName profileImage')
-        post.populate('comment.author')
+        await post.populate('author', 'name userName profileImage')
+        await post.populate('comments.author')
         return res.status(201).json(post)
     } catch (error) {
         return res.status(500).json({ message: `comment post error ${error}` })
@@ -90,13 +93,13 @@ export const comment = async () => {
 export const saved = async (req, res) => {
     try {
         const postId = req.params.postId
-        const user = await User.findById(req.userId)
+        const user = await User.findById(req.userId).select('-password')
 
         const alreadySaved = user.saved.some((id) => id.toString() == postId.toString())
         if (alreadySaved) {
             user.saved = user.saved.filter((id) => id.toString() != postId.toString())
         } else {
-            user.saved.push(req.userId)
+            user.saved.push(postId)
         }
         await user.save()
         user.populate('saved')

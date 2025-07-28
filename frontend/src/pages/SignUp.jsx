@@ -38,6 +38,7 @@ const SignUp = () => {
             dispatch(setUserData(result.data))
             console.log('result.data', result.data)
             setLoading(false)
+            navigate('/signin')
         } catch (error) {
             setErr(error.response?.data?.message)
             console.log('error', error)

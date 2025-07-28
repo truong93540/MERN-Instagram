@@ -9,11 +9,13 @@ import GetSuggestedUsers from './hooks/GetSuggestedUsers'
 import Profile from './pages/Profile'
 import EditProfile from './pages/EditProfile'
 import Upload from './pages/Upload'
+import GetAllPost from './hooks/GetAllPost'
 export const serverURL = 'http://localhost:8000'
 
 const App = () => {
     GetCurrentUser()
     GetSuggestedUsers()
+    GetAllPost()
     const { userData } = useSelector((state) => state.user)
     return (
         <Routes>
