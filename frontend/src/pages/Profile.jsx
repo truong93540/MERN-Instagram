@@ -1,19 +1,22 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { serverURL } from '../App'
 import { setProfileData, setUserData } from '../redux/userSlice'
 import dp from '../assets/dp.webp'
 import Nav from '../components/Nav'
 import FollowButton from '../components/FollowButton'
+import Post from '../components/Post'
 
 const Profile = () => {
     const { userName } = useParams()
     const dispatch = useDispatch()
     const { profileData, userData } = useSelector((state) => state.user)
     const navigate = useNavigate()
+    const { postData } = useSelector((state) => state.post)
+    const [postType, setPostType] = useState('posts')
 
     const handleProfile = async () => {
         try {
@@ -102,27 +105,19 @@ const Profile = () => {
                 <div>
                     <div className="flex items-center justify-center gap-[20px] ">
                         <div className="flex relative">
-                            <div className="w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden">
-                                <img
-                                    src={profileData?.profileImage || dp}
-                                    alt=""
-                                    className="w-full object-cover"
-                                />
-                            </div>
-                            <div className="w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden absolute left-[9px]">
-                                <img
-                                    src={profileData?.profileImage || dp}
-                                    alt=""
-                                    className="w-full object-cover"
-                                />
-                            </div>
-                            <div className="w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden absolute left-[18px]">
-                                <img
-                                    src={profileData?.profileImage || dp}
-                                    alt=""
-                                    className="w-full object-cover"
-                                />
-                            </div>
+                            {profileData?.following?.slice(0, 3).map((user, index) => (
+                                <div
+                                    className={`w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden ${
+                                        index > 0 ? `absolute left-[${index * 9}px]` : ''
+                                    } `}
+                                    key={index}>
+                                    <img
+                                        src={user?.profileImage || dp}
+                                        alt=""
+                                        className="w-full object-cover"
+                                    />
+                                </div>
+                            ))}
                         </div>
                         <div className="text-white text-[22px] md:text-[30px] font-semibold ml-1">
                             {profileData?.following.length}
@@ -155,8 +150,61 @@ const Profile = () => {
                 )}
             </div>
             <div className="w-full min-h-[100vh] flex justify-center">
-                <div className="w-full max-w-[900px] flex flex-col items-center rounded-t-[30px] bg-white relative gap-[20px] pt-[30px]"></div>
-                <Nav />
+                <div className="w-full max-w-[900px] flex flex-col items-center rounded-t-[30px] bg-white relative gap-[20px] pt-[30px] pb-[100px]">
+                    {profileData?._id == userData._id && (
+                        <div className="w-[90%] max-w-[500px] h-[80px] bg-white rounded-full flex justify-center items-center gap-[10px]">
+                            <div
+                                className={`w-[28%] h-[80%] flex justify-center items-center text-[19px] font-semibold hover:shadow-2xl hover:bg-black hover:shadow-black hover:text-white cursor-pointer rounded-full ${
+                                    postType == 'posts'
+                                        ? 'bg-black shadow-black text-white shadow-2xl'
+                                        : ''
+                                }`}
+                                onClick={() => setPostType('posts')}>
+                                Post
+                            </div>
+                            <div
+                                className={`w-[28%] h-[80%] flex justify-center items-center text-[19px] font-semibold hover:shadow-2xl hover:bg-black hover:shadow-black hover:text-white cursor-pointer rounded-full ${
+                                    postType == 'saved'
+                                        ? 'bg-black shadow-black text-white shadow-2xl'
+                                        : ''
+                                }`}
+                                onClick={() => setPostType('saved')}>
+                                Saved
+                            </div>
+                        </div>
+                    )}
+                    <Nav />
+                    {profileData?._id == userData._id && (
+                        <>
+                            {postType == 'posts' &&
+                                postData?.map(
+                                    (post, index) =>
+                                        post?.author?._id == profileData?._id && (
+                                            <Post post={post} key={index} />
+                                        )
+                                )}
+
+                            {postType == 'saved' &&
+                                postData.map(
+                                    (post, index) =>
+                                        userData.saved.includes(post._id) && (
+                                            <Post post={post} key={index} />
+                                        )
+                                )}
+                        </>
+                    )}
+                    {profileData?._id != userData._id && (
+                        <>
+                            {postType == 'posts' &&
+                                postData?.map(
+                                    (post, index) =>
+                                        post?.author?._id == profileData?._id && (
+                                            <Post post={post} key={index} />
+                                        )
+                                )}
+                        </>
+                    )}
+                </div>
             </div>
         </div>
     )

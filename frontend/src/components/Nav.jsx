@@ -20,7 +20,7 @@ const Nav = () => {
             <div className="cursor-pointer" onClick={() => navigate('/upload')}>
                 <FiPlusSquare className="text-white w-[32px] h-[32px]" />
             </div>
-            <div>
+            <div onClick={() => navigate('/loops')} className="cursor-pointer">
                 <MdOutlineOndemandVideo className="text-white w-[32px] h-[32px]" />
             </div>
             <div

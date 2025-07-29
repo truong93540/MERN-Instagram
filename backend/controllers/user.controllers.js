@@ -4,7 +4,9 @@ import User from '../models/user.model.js'
 export const getCurrentUser = async (req, res) => {
     try {
         const userId = req.userId
-        const user = await User.findById(userId).select('-password').populate('posts loops')
+        const user = await User.findById(userId)
+            .select('-password')
+            .populate('posts loops posts.author posts.comments')
         if (!user) {
             return res.status(400).json({ message: 'user not found' })
         }
@@ -18,7 +20,9 @@ export const suggestedUsers = async (req, res) => {
     try {
         const users = await User.find({
             _id: { $ne: req.userId },
-        }).select('-password')
+        })
+            .select('-password')
+            .sort({ createdAt: -1 })
         return res.status(200).json(users)
     } catch (error) {
         return res.status(500).json({ message: `get suggested user error ${error}` })

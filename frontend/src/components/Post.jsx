@@ -78,14 +78,14 @@ const Post = ({ post }) => {
                             className="w-full object-cover"
                         />
                     </div>
-                    <div className="w-[150px] font-semibold truncate">{post.author.userName}</div>
+                    <div className="w-[150px] font-semibold truncate">{post?.author?.userName}</div>
                 </div>
-                {userData._id != post.author._id && (
+                {userData?._id != post.author?._id && (
                     <FollowButton
                         tailwind={
-                            'px-[10px] w-[60px] md:w-[100px] py-[5px] h-[30px] md:h-[40px] bg-black text-white rounded-2xl text-[14px] md:text-[16px]'
+                            'px-[10px] w-[60px] md:w-[100px] py-[5px] h-[30px] md:h-[40px] bg-black text-white rounded-2xl text-[14px] md:text-[16px] cursor-pointer'
                         }
-                        targetUserId={post.author._id}
+                        targetUserId={post.author?._id}
                     />
                 )}
             </div>
@@ -122,10 +122,10 @@ const Post = ({ post }) => {
                     </div>
                 </div>
                 <div onClick={handleSaved}>
-                    {!userData.saved.includes(post?._id) && (
+                    {!userData.saved.includes(post._id) && (
                         <FaRegBookmark className="w-[25px] cursor-pointer h-[25px]" />
                     )}
-                    {userData.saved.includes(post?._id) && (
+                    {userData.saved.includes(post._id) && (
                         <FaBookmark className="w-[25px] cursor-pointer h-[25px]" />
                     )}
                 </div>
