@@ -79,6 +79,7 @@ export const comment = async (req, res) => {
         post.comments.push({
             author: req.userId,
             message,
+            createdAt: new Date(),
         })
 
         await post.save()

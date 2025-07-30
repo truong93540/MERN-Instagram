@@ -35,7 +35,7 @@ export const uploadLoop = async (req, res) => {
 export const like = async (req, res) => {
     try {
         const loopId = req.params.loopId
-        const loop = await Post.findById(loopId)
+        const loop = await Loop.findById(loopId)
         if (!loop) {
             return res.status(400).json({ message: 'loop not found' })
         }
@@ -47,14 +47,14 @@ export const like = async (req, res) => {
             loop.likes.push(req.userId)
         }
         await loop.save()
-        loop.populate('author', 'name userName profileImage')
+        await loop.populate('author', 'name userName profileImage')
         return res.status(200).json(loop)
     } catch (error) {
         return res.status(500).json({ message: `like loop error ${error}` })
     }
 }
 
-export const comment = async () => {
+export const comment = async (req, res) => {
     try {
         const { message } = req.body
         const loopId = req.params.loopId
@@ -69,8 +69,10 @@ export const comment = async () => {
         })
 
         await loop.save()
-        loop.populate('author', 'name userName profileImage')
-        loop.populate('comment.author')
+        await loop.populate([
+            { path: 'author', select: 'name userName profileImage' },
+            { path: 'comments.author' },
+        ])
         return res.status(201).json(loop)
     } catch (error) {
         return res.status(500).json({ message: `comment loop error ${error}` })
@@ -82,6 +84,7 @@ export const getAllLoops = async (req, res) => {
         const loops = await Loop.find()
             .populate('author', 'name userName profileImage')
             .populate('comments.author')
+            .sort({ createdAt: -1 })
         return res.status(200).json(loops)
     } catch (error) {
         return res.status(500).json({ message: `get all loops error ${error}` })

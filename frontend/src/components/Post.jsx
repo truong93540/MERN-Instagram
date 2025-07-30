@@ -29,6 +29,7 @@ const Post = ({ post }) => {
             const updatePost = result.data
 
             const updatePosts = postData.map((p) => (p._id == post._id ? updatePost : p))
+
             dispatch(setPostData(updatePosts))
         } catch (error) {
             console.log(error)
@@ -48,6 +49,7 @@ const Post = ({ post }) => {
 
             const updatePosts = postData.map((p) => (p._id == post._id ? updatePost : p))
             dispatch(setPostData(updatePosts))
+            setMessage('')
         } catch (error) {
             console.log(error)
         }
@@ -137,35 +139,38 @@ const Post = ({ post }) => {
                 </div>
             )}
             {showComment && (
-                <div className="w-full flex flex-col gap-[30px] pb-[20px]">
+                <div className="w-full flex flex-col gap-[10px] pb-[20px] ">
                     <div className="w-full h-[80px] flex items-center justify-between px-[20px] relative">
                         <div
                             className="w-[40px] h-[40px] md:w-[60px] md:h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden"
                             onClick={() => navigate(`/profile/${post.author?.userName}`)}>
                             <img
-                                src={post.author?.profileImage || dp}
+                                src={userData.profileImage || dp}
                                 alt=""
-                                className="w-full object-cover"
+                                className="w-full object-cover h-full"
                             />
                         </div>
-                        <input
-                            type="text"
-                            className="px-[10px] border-b-2 border-b-gray-500 w-[90%] outline-none h-[40px]"
-                            placeholder="Write comment"
-                            onChange={(e) => setMessage(e.target.value)}
-                        />
-                        <button
-                            className="absolute right-[20px] cursor-pointer"
-                            onClick={handleComment}>
-                            <IoSend className="w-[25px] h-[25px]" />
-                        </button>
+                        <div className="flex items-center flex-grow">
+                            <input
+                                type="text"
+                                className="px-[10px] border-b-2 border-b-gray-500 w-full outline-none h-[40px] ml-2"
+                                placeholder="Write comment"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                            />
+                            <button
+                                className="absolute right-[20px] cursor-pointer"
+                                onClick={handleComment}>
+                                <IoSend className="w-[25px] h-[25px]" />
+                            </button>
+                        </div>
                     </div>
-                    <div className="w-full max-h-[300px] overflow-auto">
+                    <div className="w-full max-h-[300px] overflow-auto no-scrollbar">
                         <div>
                             {post.comments?.map((comment, index) => (
                                 <div
                                     key={index}
-                                    className="w-full px-[20px] py-[20px] flex items-center gap-[20px] border-b-2 border-b-gray-200">
+                                    className="w-full px-[20px] py-[20px] flex items-center gap-[20px] border-t-2 border-t-gray-200">
                                     <div
                                         className="w-[40px] h-[40px] md:w-[60px] md:h-[60px] border-2 border-black rounded-full cursor-pointer overflow-hidden flex"
                                         onClick={() =>

@@ -16,14 +16,14 @@ const Upload = () => {
     const [uploadType, setUploadType] = useState('post')
     const [frontendMedia, setFrontendMedia] = useState(null)
     const [backendMedia, setBackendMedia] = useState(null)
-    const mediaInput = useRef()
     const [mediaType, setMediaType] = useState('')
     const [caption, setCaption] = useState('')
+    const [loading, setLoading] = useState(false)
+    const mediaInput = useRef()
     const dispatch = useDispatch()
     const { postData } = useSelector((state) => state.post)
     const { storyData } = useSelector((state) => state.story)
     const { loopData } = useSelector((state) => state.loop)
-    const [loading, setLoading] = useState(false)
 
     const handleMedia = (e) => {
         const file = e.target.files[0]
@@ -60,6 +60,7 @@ const Upload = () => {
         try {
             const formData = new FormData()
             formData.append('media', backendMedia)
+            formData.append('mediaType', mediaType)
             const result = await axios.post(`${serverURL}/api/story/upload`, formData, {
                 withCredentials: true,
             })
@@ -136,7 +137,13 @@ const Upload = () => {
                 <div
                     className="w-[80%] max-w-[500px] h-[250px] bg-[#0e1316] border-gray-800 border-2 flex flex-col items-center justify-center gap-[8px] mt-[15vh] rounded-2xl cursor-pointer hover:bg-[#353a3d]"
                     onClick={() => mediaInput.current.click()}>
-                    <input type="file" hidden ref={mediaInput} onChange={handleMedia} />
+                    <input
+                        type="file"
+                        hidden
+                        ref={mediaInput}
+                        onChange={handleMedia}
+                        accept={uploadType == 'loop' ? 'video/*' : ''}
+                    />
                     <FiPlusSquare className="text-white w-[32px] h-[32px]" />
                     <div className="text-white text-[19px] font-semibold">Upload {uploadType}</div>
                 </div>
