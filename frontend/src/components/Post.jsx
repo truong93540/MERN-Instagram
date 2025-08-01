@@ -133,9 +133,9 @@ const Post = ({ post }) => {
                 </div>
             </div>
             {post.caption && (
-                <div className="w-full px-[20px] gap-[10px] flex justify-start items-center">
-                    <h1>{post.author.userName}</h1>
-                    <div>{post.caption}</div>
+                <div className="w-full px-[20px] gap-[10px] flex justify-start">
+                    <h1 className="font-medium">{post.author.userName}:</h1>
+                    <div className="line-clamp-3">{post.caption}</div>
                 </div>
             )}
             {showComment && (

@@ -7,9 +7,9 @@ import { serverURL } from '../App'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPostData } from '../redux/postSlice'
-import { setStoryData } from '../redux/storySlice'
 import { setLoopData } from '../redux/loopSlice'
 import { ClipLoader } from 'react-spinners'
+import { setCurrentUserStory } from '../redux/storySlice'
 
 const Upload = () => {
     const navigate = useNavigate()
@@ -22,7 +22,6 @@ const Upload = () => {
     const mediaInput = useRef()
     const dispatch = useDispatch()
     const { postData } = useSelector((state) => state.post)
-    const { storyData } = useSelector((state) => state.story)
     const { loopData } = useSelector((state) => state.loop)
 
     const handleMedia = (e) => {
@@ -64,7 +63,7 @@ const Upload = () => {
             const result = await axios.post(`${serverURL}/api/story/upload`, formData, {
                 withCredentials: true,
             })
-            dispatch(setStoryData([...storyData, result.data]))
+            dispatch(setCurrentUserStory(result.data))
             setLoading(false)
             navigate('/')
         } catch (error) {

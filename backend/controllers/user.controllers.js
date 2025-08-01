@@ -4,9 +4,8 @@ import User from '../models/user.model.js'
 export const getCurrentUser = async (req, res) => {
     try {
         const userId = req.userId
-        const user = await User.findById(userId)
-            .select('-password')
-            .populate('posts loops posts.author posts.comments')
+        const user = await User.findById(userId).select('-password').populate('story loops')
+        await user.populate([{ path: 'posts', select: 'author comments' }])
         if (!user) {
             return res.status(400).json({ message: 'user not found' })
         }

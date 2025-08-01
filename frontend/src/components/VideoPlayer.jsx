@@ -3,29 +3,38 @@ import { IoVolumeHighOutline, IoVolumeMuteOutline } from 'react-icons/io5'
 
 const VideoPlayer = ({ media }) => {
     const videoTag = useRef()
-    const [mute, setMute] = useState(false)
+    const [mute, setMute] = useState(true)
     const [isPlaying, setIsPlaying] = useState(true)
 
     const handleClick = () => {
         if (isPlaying) {
-            videoTag.current.pause()
+            if (videoTag.current) {
+                videoTag.current.pause()
+            }
             setIsPlaying(false)
         } else {
-            videoTag.current.play()
+            if (videoTag.current) {
+                videoTag.current.play()
+            }
             setIsPlaying(true)
         }
     }
 
     useEffect(() => {
         const observer = new IntersectionObserver(
-            (entry) => {
+            (entries) => {
+                const entry = entries[0]
                 const video = videoTag.current
                 if (entry.isIntersecting) {
-                    video.play()
-                    setIsPlaying(true)
+                    if (video) {
+                        video.play()
+                        setIsPlaying(true)
+                    }
                 } else {
-                    video.pause()
-                    setIsPlaying(false)
+                    if (video) {
+                        video.pause()
+                        setIsPlaying(false)
+                    }
                 }
             },
             { threshold: 0.6 }

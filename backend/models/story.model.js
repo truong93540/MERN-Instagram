@@ -6,7 +6,7 @@ const storySchema = new mongoose.Schema(
         mediaType: { type: String, enum: ['image', 'video'], required: true },
         media: { type: String, required: true },
         viewers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }],
-        createdAt: { type: Date, default: Date.now(), expires: 86400 },
+        createdAt: { type: Date, default: Date.now, expires: 86400 },
     },
     { timestamps: true }
 )

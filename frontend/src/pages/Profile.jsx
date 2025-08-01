@@ -83,18 +83,21 @@ const Profile = () => {
                 <div>
                     <div className="flex items-center justify-center gap-[20px] ">
                         <div className="flex relative">
-                            {profileData?.followers?.slice(0, 3).map((user, index) => (
-                                <div
-                                    className={`w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden ${
-                                        index > 0 ? `absolute left-[${index * 9}px]` : ''
-                                    } `}>
-                                    <img
-                                        src={user?.profileImage || dp}
-                                        alt=""
-                                        className="w-full object-cover"
-                                    />
-                                </div>
-                            ))}
+                            {profileData?.followers?.slice(0, 3).map((user, index) => {
+                                return (
+                                    <div
+                                        className={`w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden ${
+                                            index > 0 ? `absolute` : ''
+                                        } `}
+                                        style={index > 0 ? { left: `${index * 9}px` } : {}}>
+                                        <img
+                                            src={user?.profileImage || dp}
+                                            alt=""
+                                            className="w-full object-cover"
+                                        />
+                                    </div>
+                                )
+                            })}
                         </div>
                         <div className="text-white text-[22px] md:text-[30px] font-semibold ml-1">
                             {profileData?.followers.length}
@@ -108,9 +111,10 @@ const Profile = () => {
                             {profileData?.following?.slice(0, 3).map((user, index) => (
                                 <div
                                     className={`w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden ${
-                                        index > 0 ? `absolute left-[${index * 9}px]` : ''
+                                        index > 0 ? `absolute` : ''
                                     } `}
-                                    key={index}>
+                                    key={index}
+                                    style={index > 0 ? { left: `${index * 9}px` } : {}}>
                                     <img
                                         src={user?.profileImage || dp}
                                         alt=""

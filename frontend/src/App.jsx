@@ -12,6 +12,8 @@ import Upload from './pages/Upload'
 import GetAllPost from './hooks/GetAllPost'
 import Loops from './pages/Loops'
 import GetAllLoops from './hooks/GetAllLoops'
+import Story from './pages/Story'
+import GetAllStories from './hooks/GetAllStories'
 export const serverURL = 'http://localhost:8000'
 
 const App = () => {
@@ -19,6 +21,7 @@ const App = () => {
     GetSuggestedUsers()
     GetAllPost()
     GetAllLoops()
+    GetAllStories()
     const { userData } = useSelector((state) => state.user)
     return (
         <Routes>
@@ -32,6 +35,10 @@ const App = () => {
             <Route
                 path="/profile/:userName"
                 element={userData ? <Profile /> : <Navigate to={'/signin'} />}
+            />
+            <Route
+                path="/story/:userName"
+                element={userData ? <Story /> : <Navigate to={'/signin'} />}
             />
             <Route
                 path="/edit-profile"

@@ -20,8 +20,8 @@ const EditProfile = () => {
     const [bio, setBio] = useState(userData.bio || '')
     const [profession, setProfession] = useState(userData.profession || '')
     const [gender, setGender] = useState(userData.gender || '')
-    const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
 
     const handleImage = (e) => {
         const file = e.target.files[0]

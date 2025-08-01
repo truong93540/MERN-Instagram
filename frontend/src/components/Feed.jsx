@@ -8,6 +8,7 @@ import Post from './Post'
 const Feed = () => {
     const { postData } = useSelector((state) => state.post)
     const { userData } = useSelector((state) => state.user)
+    const { storyList, currentUserStory } = useSelector((state) => state.story)
 
     return (
         <div className="lg:w-[50%] w-full bg-black min-h-[100vh] lg:h-[100vh] relative lg:overflow-y-auto no-scrollbar">
@@ -21,8 +22,18 @@ const Feed = () => {
                 <StoryDP
                     userName={'Your Story'}
                     ProfileImage={userData.profileImage}
-                    story={userData.story}
+                    story={currentUserStory[0]}
                 />
+                {storyList?.map((story, index) => {
+                    return (
+                        <StoryDP
+                            userName={story?.author.userName}
+                            ProfileImage={story?.author.profileImage}
+                            story={story}
+                            key={index}
+                        />
+                    )
+                })}
             </div>
             <div className="w-full min-h-[100vh] flex flex-col items-center gap-[20px] p-[10px] pt-[40px] bg-white rounded-t-[60px] relative pb-[120px]">
                 <Nav />
