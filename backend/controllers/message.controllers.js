@@ -5,7 +5,7 @@ import Message from '../models/message.model.js'
 export const sendMessage = async (req, res) => {
     try {
         const senderId = req.userId
-        const receiverId = req.param.receiverId
+        const receiverId = req.params.receiverId
         const { message } = req.body
 
         let image
@@ -33,6 +33,8 @@ export const sendMessage = async (req, res) => {
             conversation.messages.push(newMessage._id)
             await conversation.save()
         }
+
+        return res.status(200).json(newMessage)
     } catch (error) {
         return res.status(500).json({ message: `send Message error ${error}` })
     }
@@ -41,7 +43,7 @@ export const sendMessage = async (req, res) => {
 export const getAllMessages = async (req, res) => {
     try {
         const senderId = req.userId
-        const receiverId = req.param.receiverId
+        const receiverId = req.params.receiverId
         const conversation = await Conversation.findOne({
             participants: { $all: [senderId, receiverId] },
         }).populate('messages')

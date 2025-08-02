@@ -88,7 +88,7 @@ const LoopCard = ({ loop }) => {
                 { message },
                 {
                     withCredentials: true,
-                }
+                },
             )
             const updateLoop = result.data
 
@@ -109,11 +109,11 @@ const LoopCard = ({ loop }) => {
                     video.play()
                     setIsPlaying(true)
                 } else {
-                    video.pause()
+                    video?.pause()
                     setIsPlaying(false)
                 }
             },
-            { threshold: 0.6 }
+            { threshold: 0.6 },
         )
 
         if (videoRef.current) {

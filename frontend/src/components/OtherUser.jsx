@@ -6,10 +6,10 @@ const OtherUser = ({ user }) => {
     const navigate = useNavigate()
     return (
         <div className="w-full h-[80px] flex items-center justify-between border-b-2 border-gray-800">
-            <div
-                className="flex items-center justify-between"
-                onClick={() => navigate(`/profile/${user.userName}`)}>
-                <div className="w-[50px] h-[50px] border-2 border-black rounded-full cursor-pointer overflow-hidden">
+            <div className="flex items-center justify-between">
+                <div
+                    className="w-[50px] h-[50px] border-2 border-black rounded-full cursor-pointer overflow-hidden"
+                    onClick={() => navigate(`/profile/${user.userName}`)}>
                     <img src={user.profileImage || dp} alt="" className="w-full object-cover" />
                 </div>
                 <div className="ml-2">
@@ -27,9 +27,6 @@ const OtherUser = ({ user }) => {
                 }
                 targetUserId={user._id}
             />
-            {/* <button className="px-[10px] w-[100px] py-[5px] h-[40px] bg-white rounded-2xl cursor-pointer">
-                Follow
-            </button> */}
         </div>
     )
 }

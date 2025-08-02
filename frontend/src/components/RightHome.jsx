@@ -1,4 +1,4 @@
-import Message from '../pages/Message'
+import Message from '../pages/Messages'
 
 const RightHome = () => {
     return (

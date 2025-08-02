@@ -3,7 +3,7 @@ import SignUp from './pages/SignUp'
 import SignIn from './pages/SignIn'
 import ForgotPassword from './pages/ForgotPassword'
 import Home from './pages/Home'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import GetCurrentUser from './hooks/GetCurrentUser'
 import GetSuggestedUsers from './hooks/GetSuggestedUsers'
 import Profile from './pages/Profile'
@@ -14,6 +14,12 @@ import Loops from './pages/Loops'
 import GetAllLoops from './hooks/GetAllLoops'
 import Story from './pages/Story'
 import GetAllStories from './hooks/GetAllStories'
+import Messages from './pages/Messages'
+import MessageArea from './pages/MessageArea'
+import { io } from 'socket.io-client'
+import { useEffect } from 'react'
+import { setOnlineUsers, setSocket } from './redux/socketSlice'
+
 export const serverURL = 'http://localhost:8000'
 
 const App = () => {
@@ -23,6 +29,31 @@ const App = () => {
     GetAllLoops()
     GetAllStories()
     const { userData } = useSelector((state) => state.user)
+    const { socket } = useSelector((state) => state.socket)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (userData) {
+            const socketIo = io(serverURL, {
+                query: {
+                    userId: userData._id,
+                },
+            })
+            dispatch(setSocket(socketIo))
+
+            socketIo.on('getOnlineUsers', (users) => {
+                dispatch(setOnlineUsers(users))
+            })
+
+            return () => socketIo.close()
+        } else {
+            if (socket) {
+                socket.close()
+                dispatch(setSocket(null))
+            }
+        }
+    }, [userData])
+
     return (
         <Routes>
             <Route path="/signup" element={!userData ? <SignUp /> : <Navigate to={'/'} />} />
@@ -43,6 +74,14 @@ const App = () => {
             <Route
                 path="/edit-profile"
                 element={userData ? <EditProfile /> : <Navigate to={'/signin'} />}
+            />
+            <Route
+                path="/messages"
+                element={userData ? <Messages /> : <Navigate to={'/signin'} />}
+            />
+            <Route
+                path="/messageArea"
+                element={userData ? <MessageArea /> : <Navigate to={'/signin'} />}
             />
             <Route path="/upload" element={userData ? <Upload /> : <Navigate to={'/signin'} />} />
             <Route path="/loops" element={userData ? <Loops /> : <Navigate to={'/signin'} />} />

@@ -9,6 +9,7 @@ import dp from '../assets/dp.webp'
 import Nav from '../components/Nav'
 import FollowButton from '../components/FollowButton'
 import Post from '../components/Post'
+import { setSelectedUser } from '../redux/messageSlice'
 
 const Profile = () => {
     const { userName } = useParams()
@@ -89,7 +90,8 @@ const Profile = () => {
                                         className={`w-[40px] h-[40px] border-2 border-black rounded-full cursor-pointer overflow-hidden ${
                                             index > 0 ? `absolute` : ''
                                         } `}
-                                        style={index > 0 ? { left: `${index * 9}px` } : {}}>
+                                        style={index > 0 ? { left: `${index * 9}px` } : {}}
+                                        key={index}>
                                         <img
                                             src={user?.profileImage || dp}
                                             alt=""
@@ -147,7 +149,12 @@ const Profile = () => {
                             targetUserId={profileData?._id}
                             onFollowChange={handleProfile}
                         />
-                        <button className="px-[10px] min-w-[150px] py-[5px] h-[40px] bg-white cursor-pointer rounded-2xl ml-4">
+                        <button
+                            className="px-[10px] min-w-[150px] py-[5px] h-[40px] bg-white cursor-pointer rounded-2xl ml-4"
+                            onClick={() => {
+                                dispatch(setSelectedUser(profileData))
+                                navigate('/messageArea')
+                            }}>
                             Message
                         </button>
                     </div>
@@ -185,7 +192,7 @@ const Profile = () => {
                                     (post, index) =>
                                         post?.author?._id == profileData?._id && (
                                             <Post post={post} key={index} />
-                                        )
+                                        ),
                                 )}
 
                             {postType == 'saved' &&
@@ -193,7 +200,7 @@ const Profile = () => {
                                     (post, index) =>
                                         userData.saved.includes(post._id) && (
                                             <Post post={post} key={index} />
-                                        )
+                                        ),
                                 )}
                         </>
                     )}
@@ -204,7 +211,7 @@ const Profile = () => {
                                     (post, index) =>
                                         post?.author?._id == profileData?._id && (
                                             <Post post={post} key={index} />
-                                        )
+                                        ),
                                 )}
                         </>
                     )}
