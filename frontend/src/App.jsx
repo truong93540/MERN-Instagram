@@ -19,6 +19,8 @@ import MessageArea from './pages/MessageArea'
 import { io } from 'socket.io-client'
 import { useEffect } from 'react'
 import { setOnlineUsers, setSocket } from './redux/socketSlice'
+import GetFollowingList from './hooks/GetFollowingList'
+import GetPrevChatUsers from './hooks/GetPrevChatUsers'
 
 export const serverURL = 'http://localhost:8000'
 
@@ -28,6 +30,8 @@ const App = () => {
     GetAllPost()
     GetAllLoops()
     GetAllStories()
+    GetFollowingList()
+    GetPrevChatUsers()
     const { userData } = useSelector((state) => state.user)
     const { socket } = useSelector((state) => state.socket)
     const dispatch = useDispatch()

@@ -3,6 +3,7 @@ import isAuth from '../middlewares/isAuth.js'
 import {
     editProfile,
     follow,
+    followingList,
     getCurrentUser,
     getProfile,
     suggestedUsers,
@@ -15,6 +16,7 @@ userRoutes.get('/current', isAuth, getCurrentUser)
 userRoutes.get('/suggested', isAuth, suggestedUsers)
 userRoutes.get('/getProfile/:userName', isAuth, getProfile)
 userRoutes.get('/follow/:targetUserId', isAuth, follow)
+userRoutes.get('/followingList', isAuth, followingList)
 userRoutes.post('/editProfile', isAuth, upload.single('profileImage'), editProfile)
 
 export default userRoutes

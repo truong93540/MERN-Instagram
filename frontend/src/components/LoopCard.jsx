@@ -24,6 +24,7 @@ const LoopCard = ({ loop }) => {
     const navigate = useNavigate()
     const { userData } = useSelector((state) => state.user)
     const { loopData } = useSelector((state) => state.loop)
+    const { socket } = useSelector((state) => state.socket)
     const dispatch = useDispatch()
 
     const handleClick = () => {
@@ -127,19 +128,25 @@ const LoopCard = ({ loop }) => {
         }
     }, [])
 
-    // useEffect(() => {
-    //     const handleClickOutside = (event) => {
-    //         if (commentRef.current && !commentRef.current.contains(event.target)) {
-    //             setShowComment(false)
-    //         }
-    //     }
-    //     if (showComment) {
-    //         document.addEventListener('mousedown', handleClickOutside)
-    //     }
-    //     return () => {
-    //         document.removeEventListener('mousedown', handleClickOutside)
-    //     }
-    // }, [showComment])
+    useEffect(() => {
+        socket?.on('likedLoop', (updatedData) => {
+            const updatedLoops = loopData.map((p) =>
+                p._id == updatedData.loopId ? { ...p, likes: updatedData.likes } : p,
+            )
+            dispatch(setLoopData(updatedLoops))
+        })
+        socket?.on('commentedLoop', (updatedData) => {
+            const updatedLoops = loopData.map((p) =>
+                p._id == updatedData.loopId ? { ...p, comments: updatedData.comments } : p,
+            )
+            dispatch(setLoopData(updatedLoops))
+        })
+
+        return () => {
+            socket?.off('likedPost')
+            socket?.off('commentedLoop')
+        }
+    }, [socket, loopData, dispatch])
 
     return (
         <div className="w-full lg:w-[480px] h-[100vh] flex items-center justify-center border-l-2 border-r-2 border-gray-800 relative overflow-y-hidden">

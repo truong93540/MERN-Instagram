@@ -4,7 +4,9 @@ import User from '../models/user.model.js'
 export const getCurrentUser = async (req, res) => {
     try {
         const userId = req.userId
-        const user = await User.findById(userId).select('-password').populate('story loops')
+        const user = await User.findById(userId)
+            .select('-password')
+            .populate('story loops following')
         await user.populate([{ path: 'posts', select: 'author comments' }])
         if (!user) {
             return res.status(400).json({ message: 'user not found' })
@@ -99,10 +101,10 @@ export const follow = async (req, res) => {
 
         if (isFollowing) {
             currentUser.following = currentUser.following.filter(
-                (id) => id.toString() != targetUserId
+                (id) => id.toString() != targetUserId,
             )
             targetUser.followers = targetUser.followers.filter(
-                (id) => id.toString() != currentUserId
+                (id) => id.toString() != currentUserId,
             )
 
             await currentUser.save()
@@ -123,5 +125,14 @@ export const follow = async (req, res) => {
         }
     } catch (error) {
         return res.status(500).json({ message: `follow error ${error}` })
+    }
+}
+
+export const followingList = async (req, res) => {
+    try {
+        const result = await User.findById(req.userId)
+        return res.status(200).json(result?.following)
+    } catch (error) {
+        return res.status(500).json({ message: `following error ${error} ` })
     }
 }

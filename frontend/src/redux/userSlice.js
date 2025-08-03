@@ -23,6 +23,7 @@ const userSlice = createSlice({
         },
         toggleFollow: (state, action) => {
             const targetUserId = action.payload
+            console.log('targetUserId', targetUserId)
             if (state.following.includes(targetUserId)) {
                 state.following = state.following.filter((id) => id != targetUserId)
             } else {

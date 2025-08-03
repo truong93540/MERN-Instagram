@@ -5,7 +5,7 @@ import { FaRegHeart } from 'react-icons/fa'
 import { useDispatch, useSelector } from 'react-redux'
 import { FaBookmark, FaHeart, FaRegBookmark } from 'react-icons/fa6'
 import { MdOutlineComment } from 'react-icons/md'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { IoSend } from 'react-icons/io5'
 import axios from 'axios'
 import { serverURL } from '../App'
@@ -17,6 +17,7 @@ const Post = ({ post }) => {
     const navigate = useNavigate()
     const { userData } = useSelector((state) => state.user)
     const { postData } = useSelector((state) => state.post)
+    const { socket } = useSelector((state) => state.socket)
     const [showComment, setShowComment] = useState(false)
     const dispatch = useDispatch()
     const [message, setMessage] = useState('')
@@ -66,6 +67,26 @@ const Post = ({ post }) => {
             console.log(error)
         }
     }
+
+    useEffect(() => {
+        socket?.on('likedPost', (updatedData) => {
+            const updatedPosts = postData.map((p) =>
+                p._id == updatedData.postId ? { ...p, likes: updatedData.likes } : p,
+            )
+            dispatch(setPostData(updatedPosts))
+        })
+        socket?.on('commentedPost', (updatedData) => {
+            const updatedPosts = postData.map((p) =>
+                p._id == updatedData.postId ? { ...p, comments: updatedData.comments } : p,
+            )
+            dispatch(setPostData(updatedPosts))
+        })
+
+        return () => {
+            socket?.off('likedPost')
+            socket?.off('commentedPost')
+        }
+    }, [socket, postData, dispatch])
 
     return (
         <div className="w-[90%] flex flex-col gap-[10px] bg-white items-center shadow-2xl shadow-[#00000058] rounded-2xl pb-5">

@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
 const ReceiverMessage = ({ message }) => {
     const { selectedUser } = useSelector((state) => state.message)
+    const scroll = useRef()
+
+    useEffect(() => {
+        scroll.current.scrollIntoView({ behavior: 'smooth' })
+    }, [message.message, message.image])
 
     return (
-        <div className="w-fit max-w-[60%] bg-[#1a1f1f] rounded-t-2xl rounded-br-2xl rounded-bl-0 px-[10px] py-[10px] left-0 relative gap-[10px]">
+        <div
+            className="w-fit max-w-[60%] bg-[#1a1f1f] rounded-t-2xl rounded-br-2xl rounded-bl-0 px-[10px] py-[10px] left-0 relative gap-[10px]"
+            ref={scroll}>
             {message.image && (
                 <img src={message.image} alt="" className="h-[200px] object-cover rounded-2xl" />
             )}
