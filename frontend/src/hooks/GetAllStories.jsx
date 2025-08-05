@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverURL } from '../App'
 import { setStoryList } from '../redux/storySlice'
 
 function GetAllStories() {
@@ -10,9 +9,12 @@ function GetAllStories() {
     useEffect(() => {
         const fetchStories = async () => {
             try {
-                const result = await axios.get(`${serverURL}/api/story/getAll`, {
-                    withCredentials: true,
-                })
+                const result = await axios.get(
+                    `${import.meta.env.VITE_SERVER_URL}/api/story/getAll`,
+                    {
+                        withCredentials: true,
+                    },
+                )
                 dispatch(setStoryList(result.data))
             } catch (error) {
                 console.log(error)

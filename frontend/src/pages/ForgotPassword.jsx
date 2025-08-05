@@ -1,8 +1,6 @@
 import axios from 'axios'
 import React, { useState } from 'react'
 import { ClipLoader } from 'react-spinners'
-import { serverURL } from '../App'
-
 const ForgotPassword = () => {
     const [step, setStep] = useState(1)
     const [inputClicked, setInputClicked] = useState({
@@ -23,9 +21,9 @@ const ForgotPassword = () => {
         setErr('')
         try {
             const result = await axios.post(
-                `${serverURL}/api/auth/sendOtp`,
+                `${import.meta.env.VITE_SERVER_URL}/api/auth/sendOtp`,
                 { email },
-                { withCredentials: true }
+                { withCredentials: true },
             )
             setStep(2)
             console.log(result.data)
@@ -41,9 +39,9 @@ const ForgotPassword = () => {
         setErr('')
         try {
             const result = await axios.post(
-                `${serverURL}/api/auth/verifyOtp`,
+                `${import.meta.env.VITE_SERVER_URL}/api/auth/verifyOtp`,
                 { email, otp },
-                { withCredentials: true }
+                { withCredentials: true },
             )
             setStep(3)
             console.log(result.data)
@@ -62,9 +60,9 @@ const ForgotPassword = () => {
         setErr('')
         try {
             const result = await axios.post(
-                `${serverURL}/api/auth/resetPassword`,
+                `${import.meta.env.VITE_SERVER_URL}/api/auth/resetPassword`,
                 { email, password: newPassword },
-                { withCredentials: true }
+                { withCredentials: true },
             )
             console.log(result.data)
             setLoading(false)

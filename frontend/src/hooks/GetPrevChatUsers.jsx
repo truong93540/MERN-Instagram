@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverURL } from '../App'
 import { setPrevChatUser } from '../redux/messageSlice'
 
 function GetPrevChatUsers() {
@@ -10,9 +9,12 @@ function GetPrevChatUsers() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const result = await axios.get(`${serverURL}/api/message/prevChats`, {
-                    withCredentials: true,
-                })
+                const result = await axios.get(
+                    `${import.meta.env.VITE_SERVER_URL}/api/message/prevChats`,
+                    {
+                        withCredentials: true,
+                    },
+                )
                 dispatch(setPrevChatUser(result.data))
             } catch (error) {
                 console.log(error)

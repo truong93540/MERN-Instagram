@@ -4,7 +4,6 @@ import axios from 'axios'
 import { ClipLoader } from 'react-spinners'
 import logo from '../assets/logo2.png'
 import logo1 from '../assets/logo.png'
-import { serverURL } from '../App'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUserData } from '../redux/userSlice'
@@ -27,9 +26,9 @@ const SignIn = () => {
         setErr('')
         try {
             const result = await axios.post(
-                `${serverURL}/api/auth/signin`,
+                `${import.meta.env.VITE_SERVER_URL}/api/auth/signin`,
                 { userName, password },
-                { withCredentials: true }
+                { withCredentials: true },
             )
             dispatch(setUserData(result.data))
             setLoading(false)

@@ -3,7 +3,6 @@ import { FiPlusSquare } from 'react-icons/fi'
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { useNavigate } from 'react-router-dom'
 import VideoPlayer from '../components/VideoPlayer'
-import { serverURL } from '../App'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setPostData } from '../redux/postSlice'
@@ -42,9 +41,13 @@ const Upload = () => {
             formData.append('caption', caption)
             formData.append('mediaType', mediaType)
             formData.append('media', backendMedia)
-            const result = await axios.post(`${serverURL}/api/post/upload`, formData, {
-                withCredentials: true,
-            })
+            const result = await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/api/post/upload`,
+                formData,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setPostData([...postData, result.data]))
             setLoading(false)
             navigate('/')
@@ -60,9 +63,13 @@ const Upload = () => {
             const formData = new FormData()
             formData.append('media', backendMedia)
             formData.append('mediaType', mediaType)
-            const result = await axios.post(`${serverURL}/api/story/upload`, formData, {
-                withCredentials: true,
-            })
+            const result = await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/api/story/upload`,
+                formData,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setCurrentUserStory(result.data))
             setLoading(false)
             navigate('/')
@@ -78,9 +85,13 @@ const Upload = () => {
             const formData = new FormData()
             formData.append('caption', caption)
             formData.append('media', backendMedia)
-            const result = await axios.post(`${serverURL}/api/loop/upload`, formData, {
-                withCredentials: true,
-            })
+            const result = await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/api/loop/upload`,
+                formData,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setLoopData([...loopData, result.data]))
             setLoading(false)
             navigate('/')

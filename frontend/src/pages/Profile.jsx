@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { IoMdArrowRoundBack } from 'react-icons/io'
-import { serverURL } from '../App'
 import { setProfileData, setUserData } from '../redux/userSlice'
 import dp from '../assets/dp.webp'
 import Nav from '../components/Nav'
@@ -21,9 +20,12 @@ const Profile = () => {
 
     const handleProfile = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/user/getProfile/${userName}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/user/getProfile/${userName}`,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setProfileData(result.data))
         } catch (error) {
             console.log(error)
@@ -32,7 +34,7 @@ const Profile = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.get(`${serverURL}/api/auth/signout`, {
+            await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/signout`, {
                 withCredentials: true,
             })
             dispatch(setUserData(null))

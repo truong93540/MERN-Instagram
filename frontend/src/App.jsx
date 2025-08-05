@@ -26,8 +26,6 @@ import GetAllNotification from './hooks/GetAllNotifications'
 import Notifications from './pages/Notifications'
 import { setNotificationData } from './redux/userSlice'
 
-export const serverURL = 'http://localhost:8000'
-
 const App = () => {
     GetCurrentUser()
     GetSuggestedUsers()
@@ -43,7 +41,7 @@ const App = () => {
 
     useEffect(() => {
         if (userData) {
-            const socketIo = io(serverURL, {
+            const socketIo = io(import.meta.env.VITE_SERVER_URL, {
                 query: {
                     userId: userData._id,
                 },

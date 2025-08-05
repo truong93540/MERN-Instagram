@@ -8,7 +8,6 @@ import dp from '../assets/dp.webp'
 import FollowButton from './FollowButton'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { serverURL } from '../App'
 import { setLoopData } from '../redux/loopSlice'
 
 const LoopCard = ({ loop }) => {
@@ -62,9 +61,12 @@ const LoopCard = ({ loop }) => {
 
     const handleLike = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/loop/like/${loop._id}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/loop/like/${loop._id}`,
+                {
+                    withCredentials: true,
+                },
+            )
             const updateLoop = result.data
 
             const updateLoops = loopData.map((p) => (p._id == loop._id ? updateLoop : p))
@@ -85,7 +87,7 @@ const LoopCard = ({ loop }) => {
     const handleComment = async () => {
         try {
             const result = await axios.post(
-                `${serverURL}/api/loop/comment/${loop._id}`,
+                `${import.meta.env.VITE_SERVER_URL}/api/loop/comment/${loop._id}`,
                 { message },
                 {
                     withCredentials: true,

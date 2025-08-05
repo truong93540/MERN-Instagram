@@ -5,7 +5,6 @@ import dp from '../assets/dp.webp'
 import { LuImage } from 'react-icons/lu'
 import { IoSend } from 'react-icons/io5'
 import { useState, useEffect, useRef } from 'react'
-import { serverURL } from '../App'
 import axios from 'axios'
 import { setMessages } from '../redux/messageSlice'
 import SenderMessage from '../components/SenderMessage'
@@ -38,7 +37,7 @@ const MessageArea = () => {
             }
 
             const result = await axios.post(
-                `${serverURL}/api/message/send/${selectedUser._id}`,
+                `${import.meta.env.VITE_SERVER_URL}/api/message/send/${selectedUser._id}`,
                 formData,
                 { withCredentials: true },
             )
@@ -53,9 +52,12 @@ const MessageArea = () => {
 
     const getAllMessages = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/message/getAll/${selectedUser._id}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/message/getAll/${selectedUser._id}`,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setMessages(result.data))
         } catch (error) {
             console.log(error)

@@ -8,7 +8,6 @@ import { MdOutlineComment } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { IoSend } from 'react-icons/io5'
 import axios from 'axios'
-import { serverURL } from '../App'
 import { setPostData } from '../redux/postSlice'
 import { setUserData } from '../redux/userSlice'
 import FollowButton from './FollowButton'
@@ -24,9 +23,12 @@ const Post = ({ post }) => {
 
     const handleLike = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/post/like/${post._id}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/post/like/${post._id}`,
+                {
+                    withCredentials: true,
+                },
+            )
             const updatePost = result.data
 
             const updatePosts = postData.map((p) => (p._id == post._id ? updatePost : p))
@@ -40,7 +42,7 @@ const Post = ({ post }) => {
     const handleComment = async () => {
         try {
             const result = await axios.post(
-                `${serverURL}/api/post/comment/${post._id}`,
+                `${import.meta.env.VITE_SERVER_URL}/api/post/comment/${post._id}`,
                 { message },
                 {
                     withCredentials: true,
@@ -58,9 +60,12 @@ const Post = ({ post }) => {
 
     const handleSaved = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/post/saved/${post._id}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/post/saved/${post._id}`,
+                {
+                    withCredentials: true,
+                },
+            )
 
             dispatch(setUserData(result.data))
         } catch (error) {

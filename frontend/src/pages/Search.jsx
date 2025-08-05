@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { IoMdArrowRoundBack } from 'react-icons/io'
 import { IoSearch } from 'react-icons/io5'
 import { useNavigate } from 'react-router-dom'
-import { serverURL } from '../App'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSearchData } from '../redux/userSlice'
@@ -16,9 +15,12 @@ const Search = () => {
 
     const handleSearch = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/user/search?keyword=${input}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/user/search?keyword=${input}`,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setSearchData(result.data))
         } catch (error) {
             console.log(error)

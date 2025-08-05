@@ -1,6 +1,5 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverURL } from '../App'
 import { toggleFollow } from '../redux/userSlice'
 import axios from 'axios'
 
@@ -11,7 +10,7 @@ const FollowButton = ({ targetUserId, tailwind, onFollowChange }) => {
 
     const handleFollow = async () => {
         try {
-            await axios.get(`${serverURL}/api/user/follow/${targetUserId}`, {
+            await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/user/follow/${targetUserId}`, {
                 withCredentials: true,
             })
             if (onFollowChange) {

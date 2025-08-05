@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { serverURL } from '../App'
 import { setFollowing, setUserData } from '../redux/userSlice'
 import { setCurrentUserStory } from '../redux/storySlice'
 
@@ -11,9 +10,12 @@ function GetCurrentUser() {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const result = await axios.get(`${serverURL}/api/user/current`, {
-                    withCredentials: true,
-                })
+                const result = await axios.get(
+                    `${import.meta.env.VITE_SERVER_URL}/api/user/current`,
+                    {
+                        withCredentials: true,
+                    },
+                )
                 dispatch(setUserData(result.data))
                 dispatch(setFollowing(result.data.following))
                 dispatch(setCurrentUserStory(result.data.story))

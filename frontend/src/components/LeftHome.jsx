@@ -3,7 +3,6 @@ import { FaRegHeart } from 'react-icons/fa'
 import dp from '../assets/dp.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { serverURL } from '../App'
 import { setUserData } from '../redux/userSlice'
 import OtherUser from './OtherUser'
 import { useNavigate } from 'react-router-dom'
@@ -19,7 +18,7 @@ const LeftHome = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.get(`${serverURL}/api/auth/signout`, {
+            await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/signout`, {
                 withCredentials: true,
             })
             dispatch(setUserData(null))

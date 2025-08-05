@@ -5,7 +5,6 @@ import dp from '../assets/dp.webp'
 import { useRef } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { serverURL } from '../App'
 import { setProfileData, setUserData } from '../redux/userSlice'
 import { ClipLoader } from 'react-spinners'
 
@@ -42,9 +41,13 @@ const EditProfile = () => {
             if (backendImage) {
                 formData.append('profileImage', backendImage)
             }
-            const result = await axios.post(`${serverURL}/api/user/editProfile`, formData, {
-                withCredentials: true,
-            })
+            const result = await axios.post(
+                `${import.meta.env.VITE_SERVER_URL}/api/user/editProfile`,
+                formData,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setProfileData(result.data))
             dispatch(setUserData(result.data))
             setLoading(false)

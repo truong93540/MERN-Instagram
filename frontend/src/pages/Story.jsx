@@ -1,5 +1,4 @@
 import { useParams } from 'react-router-dom'
-import { serverURL } from '../App'
 import { useDispatch, useSelector } from 'react-redux'
 import { setStoryData } from '../redux/storySlice'
 import { useEffect } from 'react'
@@ -14,9 +13,12 @@ const Story = () => {
     const handleStory = async () => {
         dispatch(setStoryData(null))
         try {
-            const result = await axios.get(`${serverURL}/api/story/getByUserName/${userName}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/story/getByUserName/${userName}`,
+                {
+                    withCredentials: true,
+                },
+            )
             dispatch(setStoryData(result.data[0]))
         } catch (error) {
             console.log(error)

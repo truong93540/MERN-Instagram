@@ -3,7 +3,6 @@ import dp from '../assets/dp.webp'
 import { FiPlusCircle } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
-import { serverURL } from '../App'
 import { useEffect, useState } from 'react'
 import { setStoryList } from '../redux/storySlice'
 
@@ -16,9 +15,12 @@ const StoryDP = ({ userName, ProfileImage, story }) => {
 
     const handleViewer = async () => {
         try {
-            const result = await axios.get(`${serverURL}/api/story/view/${story._id}`, {
-                withCredentials: true,
-            })
+            const result = await axios.get(
+                `${import.meta.env.VITE_SERVER_URL}/api/story/view/${story._id}`,
+                {
+                    withCredentials: true,
+                },
+            )
             const updateStoryList = storyList.map((story) => {
                 if (story._id == result.data._id) {
                     return result.data

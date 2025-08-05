@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import logo from '../assets/logo2.png'
 import logo1 from '../assets/logo.png'
-import { serverURL } from '../App'
 import { setUserData } from '../redux/userSlice'
 
 const SignUp = () => {
@@ -31,9 +30,9 @@ const SignUp = () => {
         setLoading(true)
         try {
             const result = await axios.post(
-                `${serverURL}/api/auth/signup`,
+                `${import.meta.env.VITE_SERVER_URL}/api/auth/signup`,
                 { name, userName, email, password },
-                { withCredential: true }
+                { withCredential: true },
             )
             dispatch(setUserData(result.data))
             console.log('result.data', result.data)
