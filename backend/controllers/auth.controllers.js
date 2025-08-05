@@ -37,6 +37,8 @@ export const signIn = async (req, res) => {
     try {
         const { password, userName } = req.body
         const user = await User.findOne({ userName })
+        const isProduction = process.env.NODE_ENV === 'production'
+
         if (!user) {
             return res.status(400).json({ message: 'User not found !' })
         }
@@ -51,8 +53,8 @@ export const signIn = async (req, res) => {
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: 365 * 24 * 60 * 60 * 1000,
-            secure: true,
-            sameSite: 'None',
+            secure: isProduction,
+            sameSite: isProduction ? 'None' : 'Strict',
         })
         return res.status(201).json(user)
     } catch (error) {
