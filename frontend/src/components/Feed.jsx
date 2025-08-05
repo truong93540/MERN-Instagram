@@ -22,7 +22,7 @@ const Feed = () => {
                         className="relative cursor-pointer"
                         onClick={() => navigate('/notifications')}>
                         <FaRegHeart className="text-white w-[25px] h-[25px] " />
-                        {notificationData?.length &&
+                        {notificationData?.length > 0 &&
                             notificationData.some((noti) => noti.isRead == false) && (
                                 <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
                             )}
