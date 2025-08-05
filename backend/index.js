@@ -17,7 +17,7 @@ const port = process.env.PORT || 5000
 
 app.use(
     cors({
-        origin: 'https://mern-instagram-liard.vercel.app/',
+        origin: 'https://mern-instagram-liard.vercel.app',
         credentials: true,
     }),
 )
