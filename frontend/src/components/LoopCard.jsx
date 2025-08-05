@@ -264,7 +264,7 @@ const LoopCard = ({ loop }) => {
                     </div>
                     {userData._id != loop.author._id && (
                         <FollowButton
-                            targetUserId={loop.author?._id}
+                            targetUser={loop.author}
                             tailwind={
                                 'px-[10px] py-[5px] text-white border-2 border-white text-[14px] rounded-2xl cursor-pointer'
                             }

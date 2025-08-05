@@ -148,7 +148,7 @@ const Profile = () => {
                             tailwind={
                                 'px-[10px] min-w-[150px] py-[5px] h-[40px] bg-white cursor-pointer rounded-2xl'
                             }
-                            targetUserId={profileData?._id}
+                            targetUser={profileData}
                             onFollowChange={handleProfile}
                         />
                         <button

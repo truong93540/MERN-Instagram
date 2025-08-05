@@ -61,9 +61,13 @@ const App = () => {
         }
     }, [userData])
 
-    socket?.on('newNotification', (noti) => {
-        dispatch(setNotificationData([...notificationData, noti]))
-    })
+    useEffect(() => {
+        if (!socket) return
+        socket.on('newNotification', (noti) => {
+            dispatch(setNotificationData([...notificationData, noti]))
+        })
+        return () => socket.off('newNotification')
+    }, [socket, notificationData])
 
     return (
         <Routes>
@@ -73,7 +77,6 @@ const App = () => {
                 path="/forgot-password"
                 element={!userData ? <ForgotPassword /> : <Navigate to={'/'} />}
             />
-            <Route path="/" element={userData ? <Home /> : <Navigate to={'/signin'} />} />
             <Route
                 path="/profile/:userName"
                 element={userData ? <Profile /> : <Navigate to={'/signin'} />}
@@ -101,6 +104,7 @@ const App = () => {
             <Route path="/upload" element={userData ? <Upload /> : <Navigate to={'/signin'} />} />
             <Route path="/search" element={userData ? <Search /> : <Navigate to={'/signin'} />} />
             <Route path="/loops" element={userData ? <Loops /> : <Navigate to={'/signin'} />} />
+            <Route path="/" element={userData ? <Home /> : <Navigate to={'/signin'} />} />
         </Routes>
     )
 }

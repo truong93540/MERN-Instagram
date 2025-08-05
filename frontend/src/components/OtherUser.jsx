@@ -25,7 +25,7 @@ const OtherUser = ({ user }) => {
                 tailwind={
                     'px-[10px] w-[100px] py-[5px] h-[40px] bg-white rounded-2xl cursor-pointer'
                 }
-                targetUserId={user._id}
+                targetUser={user}
             />
         </div>
     )

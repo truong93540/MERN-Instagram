@@ -113,7 +113,7 @@ const Post = ({ post }) => {
                         tailwind={
                             'px-[10px] min-w-[60px] md:min-w-[100px] py-[5px] h-[30px] md:h-[40px] bg-black text-white rounded-2xl text-[14px] md:text-[16px] cursor-pointer'
                         }
-                        targetUserId={post.author?._id}
+                        targetUser={post.author}
                     />
                 )}
             </div>

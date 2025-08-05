@@ -30,12 +30,13 @@ const userSlice = createSlice({
             state.notificationData = action.payload
         },
         toggleFollow: (state, action) => {
-            const targetUserId = action.payload
-            console.log('targetUserId', targetUserId)
-            if (state.following.includes(targetUserId)) {
-                state.following = state.following.filter((id) => id != targetUserId)
+            const targetUser = action.payload
+            if (state.following.some((userFollowing) => userFollowing._id == targetUser._id)) {
+                state.following = state.following.filter(
+                    (userFollowing) => userFollowing._id != targetUser._id,
+                )
             } else {
-                state.following.push(targetUserId)
+                state.following.push(targetUser)
             }
         },
     },
