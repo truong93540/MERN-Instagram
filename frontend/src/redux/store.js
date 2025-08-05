@@ -7,6 +7,10 @@ import messageSlice from './messageSlice'
 import socketSlice from './socketSlice'
 
 const store = configureStore({
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware({
+            serializableCheck: false,
+        }),
     reducer: {
         user: userSlice,
         post: postSlice,

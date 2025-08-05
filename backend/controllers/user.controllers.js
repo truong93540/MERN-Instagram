@@ -1,6 +1,7 @@
 import uploadOnCloudinary from '../config/clouldinary.js'
 import Notification from '../models/notification.model.js'
 import User from '../models/user.model.js'
+import { getSocketId } from '../socket.js'
 
 export const getCurrentUser = async (req, res) => {
     try {
@@ -122,7 +123,6 @@ export const follow = async (req, res) => {
                     sender: currentUser._id,
                     receiver: targetUser._id,
                     type: 'follow',
-                    loop: loop._id,
                     message: 'stated following you',
                 })
 
