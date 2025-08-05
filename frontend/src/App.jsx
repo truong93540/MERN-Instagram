@@ -21,6 +21,10 @@ import { useEffect } from 'react'
 import { setOnlineUsers, setSocket } from './redux/socketSlice'
 import GetFollowingList from './hooks/GetFollowingList'
 import GetPrevChatUsers from './hooks/GetPrevChatUsers'
+import Search from './pages/Search'
+import GetAllNotification from './hooks/GetAllNotifications'
+import Notifications from './pages/Notifications'
+import { setNotificationData } from './redux/userSlice'
 
 export const serverURL = 'http://localhost:8000'
 
@@ -32,7 +36,8 @@ const App = () => {
     GetAllStories()
     GetFollowingList()
     GetPrevChatUsers()
-    const { userData } = useSelector((state) => state.user)
+    GetAllNotification()
+    const { userData, notificationData } = useSelector((state) => state.user)
     const { socket } = useSelector((state) => state.socket)
     const dispatch = useDispatch()
 
@@ -57,6 +62,10 @@ const App = () => {
             }
         }
     }, [userData])
+
+    socket?.on('newNotification', (noti) => {
+        dispatch(setNotificationData([...notificationData, noti]))
+    })
 
     return (
         <Routes>
@@ -87,7 +96,12 @@ const App = () => {
                 path="/messageArea"
                 element={userData ? <MessageArea /> : <Navigate to={'/signin'} />}
             />
+            <Route
+                path="/notifications"
+                element={userData ? <Notifications /> : <Navigate to={'/signin'} />}
+            />
             <Route path="/upload" element={userData ? <Upload /> : <Navigate to={'/signin'} />} />
+            <Route path="/search" element={userData ? <Search /> : <Navigate to={'/signin'} />} />
             <Route path="/loops" element={userData ? <Loops /> : <Navigate to={'/signin'} />} />
         </Routes>
     )

@@ -1,7 +1,8 @@
 import uploadOnCloudinary from '../config/clouldinary.js'
 import Loop from '../models/loop.model.js'
+import Notification from '../models/notification.model.js'
 import User from '../models/user.model.js'
-import { io } from '../socket.js'
+import { getSocketId, io } from '../socket.js'
 
 export const uploadLoop = async (req, res) => {
     try {
@@ -46,6 +47,23 @@ export const like = async (req, res) => {
             loop.likes = loop.likes.filter((id) => id.toString() != req.userId.toString())
         } else {
             loop.likes.push(req.userId)
+            if (loop.author._id != req.userId) {
+                const notification = await Notification.create({
+                    sender: req.userId,
+                    receiver: loop.author._id,
+                    type: 'like',
+                    loop: loopId,
+                    message: 'liked your loop',
+                })
+
+                const populateNotification = await Notification.findById(notification._id).populate(
+                    'sender receiver loop',
+                )
+                const receiverSocketId = getSocketId(loop.author._id)
+                if (receiverSocketId) {
+                    io.to(receiverSocketId).emit('newNotification', populateNotification)
+                }
+            }
         }
 
         await loop.save()
