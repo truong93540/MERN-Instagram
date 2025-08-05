@@ -26,7 +26,7 @@ import GetAllNotification from './hooks/GetAllNotifications'
 import Notifications from './pages/Notifications'
 import { setNotificationData } from './redux/userSlice'
 
-export const serverURL = 'https://mern-instagram-yyq5.onrender.com/'
+export const serverURL = 'https://mern-instagram-yyq5.onrender.com'
 
 const App = () => {
     GetCurrentUser()
