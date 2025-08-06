@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const FollowButton = ({ targetUser, tailwind, onFollowChange }) => {
     const { following } = useSelector((state) => state.user)
-    const isFollowing = following.some((userFollowing) => userFollowing._id == targetUser._id)
+    const isFollowing = following.some((userFollowing) => userFollowing._id == targetUser?._id)
     const dispatch = useDispatch()
 
     const handleFollow = async () => {

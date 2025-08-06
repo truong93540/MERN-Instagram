@@ -28,11 +28,11 @@ import { setNotificationData } from './redux/userSlice'
 
 const App = () => {
     GetCurrentUser()
+    GetFollowingList()
     GetSuggestedUsers()
     GetAllPost()
     GetAllLoops()
     GetAllStories()
-    GetFollowingList()
     GetPrevChatUsers()
     GetAllNotification()
     const { userData, notificationData } = useSelector((state) => state.user)
@@ -67,7 +67,7 @@ const App = () => {
             dispatch(setNotificationData([...notificationData, noti]))
         })
         return () => socket.off('newNotification')
-    }, [socket, notificationData])
+    }, [dispatch, socket, notificationData])
 
     return (
         <Routes>
