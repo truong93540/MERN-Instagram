@@ -12,12 +12,12 @@ const SignIn = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [inputClicked, setInputClicked] = useState({
-        userName: false,
+        email: false,
         password: false,
     })
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [userName, setUserName] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [err, setErr] = useState('')
 
@@ -27,7 +27,7 @@ const SignIn = () => {
         try {
             const result = await axios.post(
                 `${import.meta.env.VITE_SERVER_URL}/api/auth/signin`,
-                { userName, password },
+                { email, password },
                 { withCredentials: true },
             )
             dispatch(setUserData(result.data))
@@ -49,22 +49,22 @@ const SignIn = () => {
                     </div>
                     <div
                         className="relative flex items-center justify-start w-[90%] h-[50px] rounded-2xl border-2 border-black"
-                        onClick={() => setInputClicked({ ...inputClicked, userName: true })}>
+                        onClick={() => setInputClicked({ ...inputClicked, email: true })}>
                         <label
-                            htmlFor="userName"
+                            htmlFor="email"
                             className={`text-gray-700 absolute left-[20px] p-[5px] bg-white text-[15px] transition-all duration-300 ease-in-out ${
-                                inputClicked.userName ? 'top-[-18px]' : 'top-[6px]'
+                                inputClicked.email ? 'top-[-18px]' : 'top-[6px]'
                             }`}>
-                            Enter Username
+                            Enter Email
                         </label>
                         <input
-                            type="text"
-                            id="userName"
+                            type="email"
+                            id="gmail"
                             className="w-[100%] h-[100%] rounded-2xl px-[20px] outline-none border-0"
                             required
-                            value={userName}
-                            onChange={(e) => setUserName(e.target.value)}
-                            onFocus={() => setInputClicked({ ...inputClicked, userName: true })}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            onFocus={() => setInputClicked({ ...inputClicked, email: true })}
                         />
                     </div>
                     <div

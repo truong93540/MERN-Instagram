@@ -27,7 +27,6 @@ const Feed = () => {
                                 <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
                             )}
                     </div>
-
                     <TbMessage2
                         className="text-white w-[25px] h-[25px]"
                         onClick={() => navigate('/messages')}

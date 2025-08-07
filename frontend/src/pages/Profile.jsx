@@ -141,6 +141,7 @@ const Profile = () => {
                         onClick={() => navigate('/edit-profile')}>
                         Edit Profile
                     </button>
+                    
                 )}
                 {profileData?._id !== userData._id && (
                     <div>

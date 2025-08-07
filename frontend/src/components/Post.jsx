@@ -94,7 +94,7 @@ const Post = ({ post }) => {
     }, [socket, postData, dispatch])
 
     return (
-        <div className="w-[90%] flex flex-col gap-[10px] bg-white items-center shadow-2xl shadow-[#00000058] rounded-2xl pb-5">
+        <div className="w-[90%] flex flex-col gap-1.5 md:gap-2 bg-white items-center shadow-2xl shadow-[#00000058] rounded-2xl pb-5">
             <div className="w-full h-[80px] flex justify-between items-center px-[10px]">
                 <div className="flex justify-center items-center gap-[10px] md:gap-[20px]">
                     <div
@@ -129,7 +129,7 @@ const Post = ({ post }) => {
                     </div>
                 )}
             </div>
-            <div className="w-full h-[60px] flex justify-between items-center px-[20px] mt-[10px]">
+            <div className="w-full h-[40px] flex justify-between items-center px-[20px] mt-[10px]">
                 <div className="flex justify-center items-center gap-[10px]">
                     <div
                         className="flex justify-center items-center gap-[5px]"

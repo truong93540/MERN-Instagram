@@ -1,5 +1,5 @@
 import logo from '../assets/logo.png'
-import { FaRegHeart } from 'react-icons/fa'
+import { IoNotifications, IoNotificationsOutline } from 'react-icons/io5'
 import dp from '../assets/dp.webp'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
@@ -36,14 +36,23 @@ const LeftHome = () => {
                 <div
                     className="relative cursor-pointer"
                     onClick={() => setShowNotification((prev) => !prev)}>
-                    <FaRegHeart className="text-white w-[25px] h-[25px]" />
+                    {showNotification ? (
+                        <div className="w-8 h-8 border-white border-2 flex justify-center items-center rounded-full bg-blue-300">
+                            <IoNotifications className="text-blue-500 w-[25px] h-[25px]" />
+                        </div>
+                    ) : (
+                        <div className="w-8 h-8 border-white border-2 flex justify-center items-center rounded-full ">
+                            <IoNotifications className="text-white w-[25px] h-[25px]" />
+                        </div>
+                    )}
+
                     {notificationData?.length &&
                         notificationData.some((noti) => noti.isRead == false) && (
                             <div className="w-[10px] h-[10px] bg-blue-600 rounded-full absolute top-0 right-[-5px]"></div>
                         )}
                 </div>
             </div>
-            {!showNotification && (
+            {!showNotification && suggestedUsers?.length > 0 && (
                 <div>
                     <div className="flex items-center justify-between w-full gap-[10px] px-[10px] border-b-2 border-b-gray-900 py-[10px]">
                         <div className="flex items-center justify-between ">

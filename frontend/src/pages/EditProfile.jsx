@@ -84,39 +84,41 @@ const EditProfile = () => {
             </div>
             <input
                 type="text"
-                className="w-[90%] max-w-[600px] h-[60px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
+                className="w-[90%] max-w-[600px] h-[50px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
                 placeholder="Enter Your Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
             />
             <input
                 type="text"
-                className="w-[90%] max-w-[600px] h-[60px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
+                className="w-[90%] max-w-[600px] h-[50px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
                 placeholder="Enter Your Username"
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
             />
             <input
                 type="text"
-                className="w-[90%] max-w-[600px] h-[60px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
+                className="w-[90%] max-w-[600px] h-[50px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
                 placeholder="Bio"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
             />
             <input
                 type="text"
-                className="w-[90%] max-w-[600px] h-[60px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
+                className="w-[90%] max-w-[600px] h-[50px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
                 placeholder="Profession"
                 value={profession}
                 onChange={(e) => setProfession(e.target.value)}
             />
-            <input
-                type="text"
-                className="w-[90%] max-w-[600px] h-[60px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
-                placeholder="Gender"
-                value={gender}
+            <select
+                name=""
+                id=""
+                className="w-[90%] max-w-[600px] h-[50px] bg-[#0a1010] border-2 border-gray-700 rounded-2xl px-[20px] outline-none text-white font-semibold"
                 onChange={(e) => setGender(e.target.value)}
-            />
+                value={gender}>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
             <button
                 className="px-[10px] w-[60%] max-w-[400px] py-[5px] h-[50px] bg-white cursor-pointer rounded-2xl"
                 onClick={handleEditProfile}>

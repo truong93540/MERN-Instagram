@@ -21,8 +21,10 @@ export const getCurrentUser = async (req, res) => {
 
 export const suggestedUsers = async (req, res) => {
     try {
+        const currentUserQuery = await User.findById(req.userId)
+
         const users = await User.find({
-            _id: { $ne: req.userId },
+            $and: [{ _id: { $ne: req.userId } }, { _id: { $nin: currentUserQuery.following } }],
         })
             .select('-password')
             .sort({ createdAt: -1 })

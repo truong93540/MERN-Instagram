@@ -35,8 +35,8 @@ export const signUp = async (req, res) => {
 
 export const signIn = async (req, res) => {
     try {
-        const { password, userName } = req.body
-        const user = await User.findOne({ userName })
+        const { password, email } = req.body
+        const user = await User.findOne({ email: email })
         const isProduction = process.env.NODE_ENV === 'production'
 
         if (!user) {

@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
         otpExpires: { type: Date },
         isOtpVerified: { type: Boolean, default: false },
     },
-    { timestamps: true }
+    { timestamps: true },
 )
 
 const User = mongoose.model('User', userSchema)

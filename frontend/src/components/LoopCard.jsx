@@ -31,14 +31,13 @@ const LoopCard = ({ loop }) => {
             setShowComment(false)
             return
         }
-        // Nếu đã có timeout nghĩa là đang chờ để xác nhận click, huỷ bỏ
+
         if (clickTimeoutRef.current) {
             clearTimeout(clickTimeoutRef.current)
             clickTimeoutRef.current = null
             return
         }
 
-        // Đợi 250ms để chắc chắn không phải double click
         clickTimeoutRef.current = setTimeout(() => {
             if (isPlaying) {
                 videoRef.current.pause()
@@ -151,7 +150,7 @@ const LoopCard = ({ loop }) => {
     }, [socket, loopData, dispatch])
 
     return (
-        <div className="w-full lg:w-[480px] h-[100vh] flex items-center justify-center border-l-2 border-r-2 border-gray-800 relative overflow-y-hidden">
+        <div className="w-full max-w-[480px] lg:w-[480px] h-[100vh] flex items-center justify-center border-l-2 border-r-2 border-gray-800 relative overflow-y-hidden">
             {showHeart && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 heart-animation z-50">
                     <FaHeart className="w-[100px] cursor-pointer h-[100px] text-white" />
