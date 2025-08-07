@@ -57,6 +57,7 @@ A full-stack social media application built with the **MERN stack** (MongoDB, Ex
 
 ## 📁 Folder Structure
 
+```
 MERN-instagram/
 |-- backend/
 | |--config/
@@ -77,6 +78,7 @@ MERN-instagram/
 | |--package.json
 | |--vite.config.js
 |--README.md
+```
 
 ---
 
