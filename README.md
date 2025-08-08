@@ -114,6 +114,14 @@ npm run dev
 
 3. Setup Frontend
 
+Create .env in frontend/ folder:
+
+```
+VITE_SERVER_URL='http://localhost:8000'
+```
+
+Start the frontend
+
 ```
    cd ../frontend
    npm install
