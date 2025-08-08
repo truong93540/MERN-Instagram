@@ -125,7 +125,7 @@ Backend
 | bcryptjs | Password hashing |
 | jsonwebtoken | Auth with JWT |
 | multer | File upload (images) |
-| cloudinary | Cloud image storage |
+| cloudinary | Cloud image, video storage |
 | nodemailer | Send email |
 | dotenv | Environment variables |
 | cors | CORS config |
@@ -167,11 +167,6 @@ Database: MongoDB Atlas
 Cloudinary: For image, video uploads
 
 ---
-
-🛡 Security Notes
-✅ All secrets (API keys, JWT, DB URIs) are stored in .env
-⚠️ Do not commit .env to GitHub
-✅ Make sure you use .gitignore with .env entry
 
 🤝 Contributing
 Pull requests are welcome! For major changes, please open an issue first.
