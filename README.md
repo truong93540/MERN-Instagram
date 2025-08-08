@@ -51,7 +51,6 @@ A full-stack social media application built with the **MERN stack** (MongoDB, Ex
 -   Socket.IO Client
 -   React Icons
 -   React Spinners
--   ESLint + TypeScript types (optional)
 
 ---
 
