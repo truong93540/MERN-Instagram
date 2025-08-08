@@ -104,12 +104,18 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 FRONTEND_URL=http://localhost:5173
 
 Start the backend:
+
+```
 npm run dev
+```
 
 3. Setup Frontend
+
+```
    cd ../frontend
    npm install
    npm run dev
+```
 
 Visit: http://localhost:5173
 
