@@ -1,0 +1,67 @@
+# Tells Autonoma when a Vercel preview of the frontend is live, so it can run
+# end-to-end tests against it.
+#
+# Vercel's GitHub integration reports every deploy as a GitHub deployment, which
+# fires `deployment_status`. Only successful *Preview* deploys are signalled -
+# production deploys are skipped so Autonoma never tests against the live site.
+#
+# Required repository settings (Settings -> Secrets and variables -> Actions):
+#   secret   AUTONOMA_SHARED_SECRET  - the signing secret from Autonoma
+#   variable AUTONOMA_ENDPOINT       - the deployment-signal URL, reachable from
+#                                      GitHub's runners (not localhost)
+name: Autonoma preview signal
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment != 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify Autonoma
+        env:
+          AUTONOMA_SHARED_SECRET: ${{ secrets.AUTONOMA_SHARED_SECRET }}
+          AUTONOMA_ENDPOINT: ${{ vars.AUTONOMA_ENDPOINT }}
+          AUTONOMA_APPLICATION_ID: cmwj2uw1o000kpsrebdqabzp8
+          PREVIEW_URL: ${{ github.event.deployment_status.environment_url || github.event.deployment_status.target_url }}
+          PREVIEW_SHA: ${{ github.event.deployment.sha }}
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          if [ -z "$AUTONOMA_ENDPOINT" ] || [ -z "$AUTONOMA_SHARED_SECRET" ]; then
+            echo "::error::AUTONOMA_ENDPOINT variable or AUTONOMA_SHARED_SECRET secret is not set"
+            exit 1
+          fi
+
+          # Vercel deploys a commit SHA, not a branch, so find the open PR it belongs to.
+          # branch and prNumber must be sent together, or not at all.
+          PR=$(curl -fsS -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$REPO/commits/$PREVIEW_SHA/pulls" \
+            | jq -c '[.[] | select(.state == "open")][0] // empty')
+          PR_NUMBER=$(printf '%s' "$PR" | jq -r '.number // empty')
+          PR_BRANCH=$(printf '%s' "$PR" | jq -r '.head.ref // empty')
+
+          BODY=$(jq -nc \
+            --arg applicationId "$AUTONOMA_APPLICATION_ID" \
+            --arg previewUrl "$PREVIEW_URL" \
+            --arg sha "$PREVIEW_SHA" \
+            --arg branch "$PR_BRANCH" \
+            --arg prNumber "$PR_NUMBER" \
+            '{applicationId:$applicationId, previewUrl:$previewUrl, sha:$sha, provider:"vercel"}
+              + (if $prNumber != "" and $branch != "" then {branch:$branch, prNumber:($prNumber|tonumber)} else {} end)')
+          echo "Signal body: $BODY"
+
+          # Sign the exact bytes that are sent.
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$AUTONOMA_SHARED_SECRET" -hex | sed 's/^.* //')
+          curl -fsS -X POST "$AUTONOMA_ENDPOINT" \
+            -H "content-type: application/json" \
+            -H "x-signature: $SIG" \
+            --data-binary "$BODY"
